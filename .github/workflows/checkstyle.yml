@@ -1,0 +1,28 @@
+name: Checkstyle
+
+on: [push]
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # Adjust the Java version as needed
+
+      - name: Build and Checkstyle
+        run: |
+          ./mvnw clean verify # Use 'mvn' for Maven or 'gradle' for Gradle
+        env:
+          CHECKSTYLE_VERSION: '8.45' # Adjust Checkstyle version as needed
+
+      - name: Checkstyle Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: checkstyle-report
+          path: target/checkstyle-result.xml # Adjust the path to your Checkstyle report
